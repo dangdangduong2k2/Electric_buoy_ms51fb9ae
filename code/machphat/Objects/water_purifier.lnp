@@ -1,0 +1,4 @@
+".\Objects\main.obj" 
+TO ".\Objects\water_purifier" 
+PRINT(".\Listings\water_purifier.m51") RAMSIZE(256) 
+DISABLEWARNING (16) 

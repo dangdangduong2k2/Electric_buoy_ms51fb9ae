@@ -1,0 +1,6 @@
+D1 -> FR107W
+D8 -> SMAJ20
+R13,R14->10k
+kích thước lỗ giữ nguyên
+khoảng cách 2 cạnh đối diện nhau ngắn lại 1mm(vì hộp có 6 cái gờ chặn)
+lật jack với led lên

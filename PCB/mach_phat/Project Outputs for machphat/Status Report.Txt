@@ -1,0 +1,12 @@
+Output: Gerber X2 Files
+Type  : GerberX2
+From  : Variant [[No Variations]] of Project [machphat.PrjPCB]
+   Generated File[pcb_Mechanical_3.gbr]
+   Generated File[pcb.EXTREP]
+   Generated File[pcb.REP]
+
+
+Files Generated   : 3
+Documents Printed : 0
+
+Finished Output Generation At 8:55:55 AM On 11/5/2024

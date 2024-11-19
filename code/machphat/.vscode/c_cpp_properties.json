@@ -1,0 +1,158 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${default}",
+                "./library",
+                "C:/Keil_v5/C51/INC/Nuvoton",
+                "C:/Keil_v5/C51/INC"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-msvc-x64"
+        },
+        {
+            "name": "Flash_machine",
+            "includePath": [
+                "d:\\Works\\OneDrive\\3. Ky thuat\\luyen.tran@vinafe.com\\416526 KH Anh Nguyen Van Binh\\Project\\code\\230705\\library",
+                "C:\\Keil_v5\\C51\\INC",
+                "d:\\Works\\OneDrive\\3. Ky thuat\\luyen.tran@vinafe.com\\416526 KH Anh Nguyen Van Binh\\Project\\code\\230705"
+            ],
+            "defines": [
+                "FOSC_160000",
+                "__C51__",
+                "__VSCODE_C51__",
+                "reentrant=",
+                "compact=",
+                "small=",
+                "large=",
+                "data=",
+                "idata=",
+                "pdata=",
+                "bdata=",
+                "xdata=",
+                "code=",
+                "bit=char",
+                "sbit=char",
+                "sfr=char",
+                "sfr16=int",
+                "sfr32=int",
+                "interrupt=",
+                "using=",
+                "_at_=",
+                "_priority_=",
+                "_task_="
+            ],
+            "intelliSenseMode": "${default}"
+        },
+        {
+            "name": "btn_manager",
+            "includePath": [
+                "e:\\OneDrive\\3. Ky thuat\\luyen.tran@vinafe.com\\0901416526 KH Anh Nguyen Van Binh\\SolarCharge18650\\code v2\\231116 auto update adc\\library",
+                "C:\\Keil_v5\\C51\\INC",
+                "e:\\OneDrive\\3. Ky thuat\\luyen.tran@vinafe.com\\0901416526 KH Anh Nguyen Van Binh\\SolarCharge18650\\code v2\\231116 auto update adc"
+            ],
+            "defines": [
+                "FOSC_160000",
+                "__C51__",
+                "__VSCODE_C51__",
+                "reentrant=",
+                "compact=",
+                "small=",
+                "large=",
+                "data=",
+                "idata=",
+                "pdata=",
+                "bdata=",
+                "xdata=",
+                "code=",
+                "bit=char",
+                "sbit=char",
+                "sfr=char",
+                "sfr16=int",
+                "sfr32=int",
+                "interrupt=",
+                "using=",
+                "_at_=",
+                "_priority_=",
+                "_task_="
+            ],
+            "intelliSenseMode": "${default}"
+        },
+        {
+            "name": "valve_ctr_by_ir",
+            "includePath": [
+                "e:\\OneDrive\\3. Ky thuat\\luyen.tran@vinafe.com\\0949526686 KH Anh Dung\\Valve_control_by_IR\\Code\\240104 refresh key\\library",
+                "C:\\Keil_v5\\C51\\INC",
+                "e:\\OneDrive\\3. Ky thuat\\luyen.tran@vinafe.com\\0949526686 KH Anh Dung\\Valve_control_by_IR\\Code\\240104 refresh key"
+            ],
+            "defines": [
+                "FOSC_160000",
+                "__C51__",
+                "__VSCODE_C51__",
+                "reentrant=",
+                "compact=",
+                "small=",
+                "large=",
+                "data=",
+                "idata=",
+                "pdata=",
+                "bdata=",
+                "xdata=",
+                "code=",
+                "bit=char",
+                "sbit=char",
+                "sfr=char",
+                "sfr16=int",
+                "sfr32=int",
+                "interrupt=",
+                "using=",
+                "_at_=",
+                "_priority_=",
+                "_task_="
+            ],
+            "intelliSenseMode": "${default}"
+        },
+        {
+            "name": "water_purifier",
+            "includePath": [
+                "d:\\Works\\Github_Projects\\Code-Lib\\NUVOTON\\Example_makefile\\library",
+                "C:\\Keil_v5\\C51\\INC",
+                "d:\\Works\\Github_Projects\\Code-Lib\\NUVOTON\\Example_makefile"
+            ],
+            "defines": [
+                "FOSC_160000",
+                "__C51__",
+                "__VSCODE_C51__",
+                "reentrant=",
+                "compact=",
+                "small=",
+                "large=",
+                "data=",
+                "idata=",
+                "pdata=",
+                "bdata=",
+                "xdata=",
+                "code=",
+                "bit=char",
+                "sbit=char",
+                "sfr=char",
+                "sfr16=int",
+                "sfr32=int",
+                "interrupt=",
+                "using=",
+                "_at_=",
+                "_priority_=",
+                "_task_="
+            ],
+            "intelliSenseMode": "${default}"
+        }
+    ],
+    "version": 4
+}

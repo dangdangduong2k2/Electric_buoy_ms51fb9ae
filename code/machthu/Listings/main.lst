@@ -1,0 +1,238 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              11/16/2024 14:39:33 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c LARGE ROM(COMPACT) OPTIMIZE(8,SPEED) BROWSE INCDIR(.\library) DEF
+                    -INE(FOSC_160000) DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "main.h"
+   2          
+   3          
+   4          #define PLD_SIZE 32
+   5          #define PLD_S 32
+   6          struct eeprom_type {
+   7            uint8_t init;
+   8            uint8_t pair;
+   9            uint8_t main_address[6];
+  10          }eData;
+  11          
+  12          uint8_t MAC[6];
+  13          uint16_t tick;
+  14          uint16_t count;
+  15          uint8_t bunmp_start;
+  16          uint8_t tx_addr[5] = {0x45, 0x55, 0x67, 0x10, 0x21};
+  17          
+  18          
+  19          uint8_t dataT[PLD_S];
+  20          uint8_t dataR[PLD_S];
+  21          uint8_t ret;
+  22          uint8_t i;
+  23          uint32_t but_count;
+  24          uint8_t set=0;
+  25          void GPIO_INIT() {
+  26   1        P04_PushPull_Mode;
+  27   1        P03_PushPull_Mode;
+  28   1        P10_PushPull_Mode;
+  29   1        P00_PushPull_Mode;
+  30   1        P01_Input_Mode;
+  31   1        P11_Input_Mode;
+  32   1        P12_PushPull_Mode;
+  33   1        P13_PushPull_Mode;
+  34   1        P13=0;
+  35   1      }
+  36          void PAIR_FUNCTION(void)
+  37          {
+  38   1        if(nrf24_data_available())
+  39   1        {
+  40   2          nrf24_receive(dataR, sizeof(dataR));
+  41   2          if(dataR[0]==0xfe)
+  42   2          {
+  43   3            eData.main_address[0]=dataR[1];
+  44   3            eData.main_address[1]=dataR[2];
+  45   3            eData.main_address[2]=dataR[3];
+  46   3            eData.main_address[3]=dataR[4];
+  47   3            eData.main_address[4]=dataR[5];
+  48   3            eData.main_address[5]=dataR[6];
+  49   3            eData.pair=0xfe;
+  50   3            AP_EEPROM_Commit();
+  51   3            delay_ms(1000);
+  52   3            P12=1;
+  53   3            delay_ms(1000);
+  54   3          }
+C51 COMPILER V9.60.7.0   MAIN                                                              11/16/2024 14:39:33 PAGE 2   
+
+  55   2        }
+  56   1      }
+  57          void USER_CONDITION(void)
+  58          {
+  59   1        if(50==tick)
+  60   1        {
+  61   2          P12=1;
+  62   2        }
+  63   1        if(100<=tick)
+  64   1        {
+  65   2          if(nrf24_data_available())
+  66   2          {
+  67   3            nrf24_receive(dataR, sizeof(dataR));
+  68   3            P12=0;
+  69   3          }
+  70   2          if(dataR[0]==0xfe
+  71   2            && dataR[1]==eData.main_address[0]
+  72   2            && dataR[2]==eData.main_address[1]
+  73   2            && dataR[3]==eData.main_address[2]
+  74   2            && dataR[4]==eData.main_address[3]
+  75   2            && dataR[5]==eData.main_address[4]
+  76   2            && dataR[6]==eData.main_address[5]
+  77   2            && dataR[7]==0x1e)
+  78   2            {
+  79   3                P12=0;
+  80   3                P13=0;
+  81   3                dataR[7]=0xFF;
+  82   3                count=0;
+  83   3            }
+  84   2          if(dataR[0]==0xfe
+  85   2            && dataR[1]==eData.main_address[0]
+  86   2            && dataR[2]==eData.main_address[1]
+  87   2            && dataR[3]==eData.main_address[2]
+  88   2            && dataR[4]==eData.main_address[3]
+  89   2            && dataR[5]==eData.main_address[4]
+  90   2            && dataR[6]==eData.main_address[5]
+  91   2            && dataR[7]==0xae)
+  92   2            {
+  93   3                P12=0;
+  94   3                P13=1;
+  95   3                dataR[0]=0xFF;
+  96   3                tick=0;
+  97   3                count=0;
+  98   3            }
+  99   2          else
+ 100   2          {       
+ 101   3            count+=100;
+ 102   3            tick=0;
+ 103   3          }
+ 104   2        }
+ 105   1        if(count>=3000)
+ 106   1        {
+ 107   2          P13=0;
+ 108   2          count=0;
+ 109   2        }
+ 110   1      }
+ 111          
+ 112          void read_mac(void) {
+ 113   1        uint8_t uid[12];
+ 114   1        uint8_t i;
+ 115   1        Read_UID(&uid);
+ 116   1        for (i = 0; i < 6; i++) {
+C51 COMPILER V9.60.7.0   MAIN                                                              11/16/2024 14:39:33 PAGE 3   
+
+ 117   2          MAC[i] = uid[i] ^ uid[i + 6];
+ 118   2        }
+ 119   1      }
+ 120          
+ 121          void main() {
+ 122   1        GPIO_INIT();
+ 123   1        MODIFY_HIRC_166();
+ 124   1        read_mac();
+ 125   1        SPI_Initial();
+ 126   1        
+ 127   1        csn_high();
+ 128   1        ce_high();
+ 129   1      
+ 130   1        delay_ms(5);
+ 131   1      
+ 132   1        ce_low();
+ 133   1      
+ 134   1        nrf24_init();
+ 135   1      
+ 136   1        nrf24_listen();
+ 137   1      
+ 138   1        nrf24_auto_ack_all(auto_ack);
+ 139   1        nrf24_en_ack_pld(disable);
+ 140   1        nrf24_dpl(disable);
+ 141   1      
+ 142   1        nrf24_set_crc(no_crc, _1byte);
+ 143   1      
+ 144   1        nrf24_tx_pwr(_0dbm);
+ 145   1        nrf24_data_rate(_250kbps);
+ 146   1        nrf24_set_channel(10);
+ 147   1        nrf24_set_addr_width(5);
+ 148   1      
+ 149   1        nrf24_set_rx_dpl(0, disable);
+ 150   1        nrf24_set_rx_dpl(1, disable);
+ 151   1        nrf24_set_rx_dpl(2, disable);
+ 152   1        nrf24_set_rx_dpl(3, disable);
+ 153   1        nrf24_set_rx_dpl(4, disable);
+ 154   1        nrf24_set_rx_dpl(5, disable);
+ 155   1      
+ 156   1        nrf24_pipe_pld_size(0, PLD_S);
+ 157   1      
+ 158   1        nrf24_auto_retr_delay(4);
+ 159   1        nrf24_auto_retr_limit(10);
+ 160   1      
+ 161   1        nrf24_open_tx_pipe(tx_addr);
+ 162   1        nrf24_open_rx_pipe(0, tx_addr);
+ 163   1        ce_high();
+ 164   1        
+ 165   1        AP_EEPROM_Init((uint8_t *)&eData, sizeof(eData));
+ 166   1        AP_EEPROM_Commit();
+ 167   1      
+ 168   1        while (1) 
+ 169   1        {
+ 170   2          nrf24_listen();
+ 171   2          while(!P11)
+ 172   2          {
+ 173   3            nrf24_stop_listen();
+ 174   3            P12=1;
+ 175   3            if(but_count>=5000)
+ 176   3            {
+ 177   4              P12=0;
+ 178   4              eData.pair=0xff;
+C51 COMPILER V9.60.7.0   MAIN                                                              11/16/2024 14:39:33 PAGE 4   
+
+ 179   4              AP_EEPROM_Commit();
+ 180   4              delay_ms(1000);
+ 181   4              P12=1;
+ 182   4              delay_ms(1000);
+ 183   4              P12=0;
+ 184   4              delay_ms(1000);
+ 185   4              P12=1;
+ 186   4              delay_ms(1000);
+ 187   4              P12=0;
+ 188   4              delay_ms(1000);
+ 189   4              P12=1;
+ 190   4              delay_ms(1000);
+ 191   4              P12=0;
+ 192   4              but_count=0;
+ 193   4            }
+ 194   3            but_count++;
+ 195   3            delay_ms(1);
+ 196   3          }
+ 197   2          if(eData.pair==0xff)
+ 198   2          {
+ 199   3            P12=0;
+ 200   3            PAIR_FUNCTION();
+ 201   3          }
+ 202   2          USER_CONDITION();
+ 203   2          tick++;
+ 204   2          delay_ms(1);
+ 205   2          
+ 206   2        }
+ 207   1        
+ 208   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   5229    ----
+   CONSTANT SIZE    =     12    ----
+   XDATA SIZE       =    102     134
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1       8
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
